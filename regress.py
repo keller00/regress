@@ -28,9 +28,7 @@ ERROR = False
 def print_warning_error(msg):
     if ERROR:
         print bcolors.FAIL + msg
-        print bcolors.FAIL + "Terminating Program."
         sys.exit()
-
     print bcolors.WARNING + msg
 
 
@@ -52,7 +50,7 @@ parser.add_argument('-o', '--out', help='Output file prefix', default='out')
 parser.add_argument('-p', '--path', help='Path to input/output files', default='.')
 parser.add_argument('-v', '--verbose', help='Increase output verbosity', action='store_true')
 parser.add_argument('-e', '--error', help='Change warnings to errors', action='store_true')
-parser.add_argument('command', help='command to run with input files')
+parser.add_argument('command', help='Command to run with input files')
 args = vars(parser.parse_args())
 
 # Set Constants
@@ -101,5 +99,5 @@ for test in input_files:
     for i, (char1, char2) in enumerate(zip(output, stdout)):
         if char1 != char2:
             # Output differs from expected
-            debug("Output of " + test + " differs from the expected output in " + outpath) # TODO Change this to warning/error
+            print_warning_error("Output of " + test + " differs from the expected output in " + outpath) # TODO Change this to warning/error
             break
