@@ -34,6 +34,13 @@ def print_warning_error(msg):
 	print bcolors.WARNING + msg	
 
 
+def which(pgm):
+    path=os.getenv('PATH')
+    for p in path.split(os.path.pathsep):
+        p=os.path.join(p,pgm)
+        if os.path.exists(p) and os.access(p,os.X_OK):
+            return p
+
 # Verbose output
 def debug(str):
     if VERBOSE:
@@ -57,6 +64,14 @@ PATH = args['path']
 ERROR = args['error']
 
 debug(args)
+
+# Check if command is valid
+command = COMMAND.split(" ")[0]
+debug("Checking if " + command + " is available...")
+path_file = which(command) # Command is somewhere in path
+local_file = os.path.isfile(command) # Command is a local file
+if not (path_file or local_file):
+    raise Exception("Command \"" + command + "\" does not exist")
 
 # Find all input/output files
 input_files = glob.glob(os.path.join(PATH , IN + '*'))
