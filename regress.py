@@ -99,5 +99,5 @@ for test in input_files:
     for i, (char1, char2) in enumerate(zip(output, stdout)):
         if char1 != char2:
             # Output differs from expected
-            print_warning_error("Output of " + test + " differs from the expected output in " + outpath) # TODO Change this to warning/error
+            print_warning_error("Output of " + test + " differs from the expected output in " + outpath)
             break
