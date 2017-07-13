@@ -26,11 +26,12 @@ PATH = ""
 ERROR = False
 
 def print_warning_error(msg):
-	print bcolors.WARNING + msg
 	if ERROR:
+		print bcolors.FAIL + msg
 		print bcolors.FAIL + "Terminating Program."
 		sys.exit()
-	
+		
+	print bcolors.WARNING + msg	
 
 
 # Verbose output
