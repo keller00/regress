@@ -7,6 +7,7 @@ import glob
 import subprocess
 import sys
 
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -17,13 +18,6 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-# Constants
-COMMAND = ""
-IN = ""
-OUT = ""
-VERBOSE = False
-PATH = ""
-ERROR = False
 
 def print_warning_error(msg):
     if ERROR:
@@ -33,16 +27,17 @@ def print_warning_error(msg):
 
 
 def which(pgm):
-    path=os.getenv('PATH')
+    path = os.getenv('PATH')
     for p in path.split(os.path.pathsep):
-        p=os.path.join(p,pgm)
-        if os.path.exists(p) and os.access(p,os.X_OK):
+        p = os.path.join(p, pgm)
+        if os.path.exists(p) and os.access(p, os.X_OK):
             return p
 
+
 # Verbose output
-def debug(str):
+def debug(string):
     if VERBOSE:
-        print str
+        print string
 
 parser = argparse.ArgumentParser(description='Run a program with multiple input files')
 parser.add_argument('-i', '--in', help='Input file prefix', default='test')
@@ -66,14 +61,14 @@ debug(args)
 # Check if command is valid
 command = COMMAND.split(" ")[0]
 debug("Checking if " + command + " is available...")
-path_file = which(command) # Command is somewhere in path
-local_file = os.path.isfile(command) # Command is a local file
+path_file = which(command)  # Command is somewhere in path
+local_file = os.path.isfile(command)  # Command is a local file
 if not (path_file or local_file):
     raise Exception("Command \"" + command + "\" does not exist")
 
 # Find all input/output files
-input_files = glob.glob(os.path.join(PATH , IN + '*'))
-output_files = glob.glob(os.path.join(PATH , OUT + '*'))
+input_files = glob.glob(os.path.join(PATH, IN + '*'))
+output_files = glob.glob(os.path.join(PATH, OUT + '*'))
 
 debug("Checking path: " + os.path.join(PATH, IN + '*'))
 debug("Detected input Files:")
@@ -89,8 +84,8 @@ for test in input_files:
     else:
         debug("Output file found: " + outpath)
 
-    input = open(test)
-    process = subprocess.Popen(COMMAND, stdin=input, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    input_file = open(test)
+    process = subprocess.Popen(COMMAND, stdin=input_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
 
     # Read in expected output
