@@ -70,7 +70,7 @@ if __name__ == "__main__":
     if not (path_file or local_file):
         print_errors("Command \"" + command + "\" does not exist")
         debug("Terminating Program.")
-        exit()
+        sys.exit(100)
 
     # Find all input/output files
     input_files = glob.glob(os.path.join(PATH, IN + '*'))
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     if terminate_program:
         debug("Terminating Program.")
-        exit()
+        sys.exit(101)
 
     for test, outpath in valid_pairs:
         input_file = open(test)
