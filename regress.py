@@ -7,8 +7,7 @@ import glob
 import subprocess
 import sys
 
-
-class bcolors:
+class colors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -18,13 +17,18 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+def print_warnings(msg):
+    print colors.WARNING + msg
 
-def print_warning_error(msg):
+def print_errors(msg):
+    print colors.FAIL + msg
+
+def print_errors_or_warnings(msg):
     if ERROR:
-        print bcolors.FAIL + msg
-        sys.exit()
-    print bcolors.WARNING + msg
-
+        print_errors(msg)
+        return True
+    else:
+        print_warnings(msg)
 
 def which(pgm):
     path = os.getenv('PATH')
@@ -33,7 +37,6 @@ def which(pgm):
         if os.path.exists(p) and os.access(p, os.X_OK):
             return p
 
-
 # Verbose output
 def debug(string):
     if VERBOSE:
@@ -41,7 +44,7 @@ def debug(string):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run a program with multiple input files')
-    parser.add_argument('-i', '--in', help='Input file prefix', default='test')
+    parser.add_argument('-i', '--in', help='Input file prefix', default='in')
     parser.add_argument('-o', '--out', help='Output file prefix', default='out')
     parser.add_argument('-p', '--path', help='Path to input/output files', default='.')
     parser.add_argument('-v', '--verbose', help='Increase output verbosity', action='store_true')
@@ -65,7 +68,9 @@ if __name__ == "__main__":
     path_file = which(command)  # Command is somewhere in path
     local_file = os.path.isfile(command)  # Command is a local file
     if not (path_file or local_file):
-        raise Exception("Command \"" + command + "\" does not exist")
+        print_errors("Command \"" + command + "\" does not exist")
+        debug("Terminating Program.")
+        sys.exit(100)
 
     # Find all input/output files
     input_files = glob.glob(os.path.join(PATH, IN + '*'))
@@ -75,16 +80,25 @@ if __name__ == "__main__":
     debug("Detected input Files:")
     debug(input_files)
 
+    valid_pairs = []
+    terminate_program = False
+
     # Make
     for test in input_files:
         debug("Checking " + test + "'s output file")
         suffix = test.rsplit(IN)[-1]
         outpath = os.path.join(PATH, OUT + suffix)
         if not os.path.isfile(outpath):
-            print_warning_error("Output file does not exist: " + outpath)
+            terminate_program = terminate_program or print_errors_or_warnings("Output file does not exist: " + outpath)
         else:
+            valid_pairs.append((test, outpath))
             debug("Output file found: " + outpath)
 
+    if terminate_program:
+        debug("Terminating Program.")
+        sys.exit(101)
+
+    for test, outpath in valid_pairs:
         input_file = open(test)
         process = subprocess.Popen(COMMAND, stdin=input_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
@@ -95,5 +109,5 @@ if __name__ == "__main__":
         for i, (char1, char2) in enumerate(zip(output, stdout)):
             if char1 != char2:
                 # Output differs from expected
-                print_warning_error("Output of " + test + " differs from the expected output in " + outpath)
+                print_errors_or_warnings("Output of " + test + " differs from the expected output of " + outpath)
                 break
