@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='regress',
@@ -11,6 +11,9 @@ setup(
     author='Mark,Jim',
     author_email='markooo.keller at gmail dot com',
     description='Regression Test Suite',
-    entry_points={'console_scripts': [
-          'regress = regress.regress:main']}
+    entry_points={
+        'console_scripts': [
+            'regress = regress.regress:main'
+        ]
+    }
 )

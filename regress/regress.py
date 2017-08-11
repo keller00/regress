@@ -42,7 +42,7 @@ def debug(string):
     if VERBOSE:
         print string
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description='Run a program with multiple input files')
     parser.add_argument('-i', '--in', help='Input file prefix', default='in')
     parser.add_argument('-o', '--out', help='Output file prefix', default='out')
@@ -111,3 +111,6 @@ if __name__ == "__main__":
                 # Output differs from expected
                 print_errors_or_warnings("Output of " + test + " differs from the expected output of " + outpath)
                 break
+
+if (__name__ == '__main__'):
+    main()
