@@ -51,9 +51,9 @@ def which(pgm):
 
 
 # Verbose output levels:
-#   0 - normal use, should only output errors
-#   1 - verbose for normal users, should output successful tests too
-#   2 - verbose for developers, should output all the info
+#   0 - default option; only output errors
+#   1 - verbose for regular users; output successful results
+#   2 - verbose for advanced users; output all information
 def debug(level, string):
     if level <= OPTIONS['VERBOSE']:
         print string
