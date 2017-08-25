@@ -21,22 +21,15 @@ optional arguments:
 ```
 
 ## Installation
-```
-git clone https://github.com/keller00/regress.git
-cd regress
-python setup.py install
-```
-
-### Development
-```
-git clone https://github.com/keller00/regress.git
-cd regress
-python setup.py develop
-```
-
-#### Run Tests
-```
-python setup.py test
-```
+* git clone https://github.com/keller00/regress.git
+* cd regress
+* python setup.py install
 
 
+## Development
+* git clone https://github.com/keller00/regress.git
+* cd regress
+* python setup.py develop
+
+## Run Tests
+* python setup.py test
