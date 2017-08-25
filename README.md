@@ -21,19 +21,22 @@ optional arguments:
 ```
 
 ## Installation
-#### macOS
 ```
-mark insert steps here
-```
-
-#### Linux
-```
-mark insert steps here
+git clone https://github.com/keller00/regress.git
+cd regress
+python setup.py install
 ```
 
-#### Windows
+### Development
 ```
-mark insert steps here
+git clone https://github.com/keller00/regress.git
+cd regress
+python setup.py develop
+```
+
+#### Run Tests
+```
+python setup.py test
 ```
 
 
