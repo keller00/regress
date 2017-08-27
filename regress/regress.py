@@ -61,9 +61,9 @@ def debug(level, string):
 
 def main():
     parser = argparse.ArgumentParser(description='Run a program with multiple input files')
-    parser.add_argument('-i', '--in', help='Input file prefix', default='in')
-    parser.add_argument('-o', '--out', help='Output file prefix', default='out')
-    parser.add_argument('-p', '--path', help='Path to input/output files', default='.')
+    parser.add_argument('-i', '--in', help='Input file prefix (default: in)', default='in')
+    parser.add_argument('-o', '--out', help='Output file prefix (default: out)', default='out')
+    parser.add_argument('-p', '--path', help='Path to input/output files (default: .)', default='.')
     parser.add_argument('-v', '--verbose', help='Increase output verbosity', action='count')
     parser.add_argument('-e', '--error', help='Change warnings to errors', action='store_true')
     parser.add_argument('command', help='Command to run with input files')
