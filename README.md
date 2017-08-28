@@ -12,9 +12,9 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -i IN, --in IN        Input file prefix
-  -o OUT, --out OUT     Output file prefix
-  -p PATH, --path PATH  Path to input/output files
+  -i IN, --in IN        Input file prefix (default: in)
+  -o OUT, --out OUT     Output file prefix (default: out)
+  -p PATH, --path PATH  Path to input/output files (default: .)
   -v, --verbose         Increase output verbosity
   -e, --error           Change warnings to errors
 
