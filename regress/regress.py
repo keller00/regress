@@ -2,10 +2,11 @@
 
 # Imports
 import os
-from argparse import ArgumentParser
-from glob import glob
-from subprocess import Popen, PIPE
 from sys import exit
+from glob import glob
+from pkg_resources import require
+from subprocess import Popen, PIPE
+from argparse import ArgumentParser
 
 OPTIONS = {
     'COMMAND': None,
@@ -155,6 +156,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
 
 
 def main():
+    version = require("regress")[0].version
     # Parse arguments
     parser = ArgumentParser(description='Run a program with multiple input files')
     parser.add_argument('-i', '--in', help='Input file prefix (default: in)', default='in')
@@ -162,6 +164,7 @@ def main():
     parser.add_argument('-p', '--path', help='Path to input/output files (default: .)', default='.')
     parser.add_argument('-v', '--verbose', help='Increase output verbosity', action='count', default=0)
     parser.add_argument('-e', '--error', help='Change warnings to errors', action='store_true')
+    parser.add_argument('--version', action='version', help='Print current version number', version='regress version : %s' % version)
     parser.add_argument('command', help='Command to run with input files')
     args = vars(parser.parse_args())
     # Call regress
