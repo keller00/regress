@@ -3,7 +3,7 @@ Compare expected output(s) to actual output(s)
 
 ## Usage
 ```
-usage: regress.py [-h] [-i IN] [-o OUT] [-p PATH] [-v] [-e] command
+usage: regress [-h] [-i IN] [-o OUT] [-p PATH] [-v] [-e] command
 
 Run a program with multiple input files
 
@@ -17,6 +17,7 @@ optional arguments:
   -p PATH, --path PATH  Path to input/output files (default: .)
   -v, --verbose         Increase output verbosity
   -e, --error           Change warnings to errors
+  --version             Print current version number
 
 ```
 

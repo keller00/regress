@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='regress',
-    version='0.5.0',
+    version='1.0.0',
     packages=['regress'],
     url='https://github.com/keller00/regress',
     license='MIT',
