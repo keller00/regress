@@ -1,11 +1,12 @@
 #!/usr/bin/python
 
 # Imports
-import argparse
 import os
-import glob
-import subprocess
-import sys
+from argparse import ArgumentParser
+from glob import glob
+from subprocess import Popen, PIPE
+from sys import exit
+
 OPTIONS = {
     'COMMAND': None,
     'IN': '',
@@ -14,7 +15,6 @@ OPTIONS = {
     'PATH': '.',
     'ERROR': False
 }
-
 
 
 # Exceptions
@@ -26,7 +26,7 @@ class OutputNotFound(Exception):
     """There's an unmatched input file"""
 
 
-class colors:
+class Colors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -39,12 +39,12 @@ class colors:
 
 def print_warnings(msg):
     """Print yellow warning messages"""
-    debug(0, colors.WARNING + msg + colors.ENDC)
+    debug(0, Colors.WARNING + msg + Colors.ENDC)
 
 
 def print_errors(msg):
     """Prints red error messages"""
-    debug(0, colors.FAIL + msg + colors.ENDC)
+    debug(0, Colors.FAIL + msg + Colors.ENDC)
 
 
 def print_errors_or_warnings(msg):
@@ -88,7 +88,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     :param path: string of path to input/output files
     :param verbose: verbosity level of regress
     :param error: error flag
-    :return: tuple of success flag with a list of failed test
+    :return: list of tuple of input file and actual output for each failed tests
     """
     # Set Constants
     OPTIONS['COMMAND'] = command
@@ -108,7 +108,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
         raise CommandNotFound
 
     debug(2, "Checking path: %s" % os.path.join(OPTIONS['PATH'], OPTIONS['IN'] + '*'))
-    input_files = glob.glob(os.path.join(OPTIONS['PATH'], OPTIONS['IN'] + '*'))
+    input_files = glob(os.path.join(OPTIONS['PATH'], OPTIONS['IN'] + '*'))
     debug(1, "Detected input files: %s" % str(input_files))
 
     valid_pairs = []
@@ -134,7 +134,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     for test, outpath in valid_pairs:
         failed = False
         input_file = open(test)
-        process = subprocess.Popen(OPTIONS['COMMAND'], stdin=input_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = Popen(OPTIONS['COMMAND'], stdin=input_file, stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
 
         output = open(outpath).read()
@@ -153,9 +153,10 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
                 return failed_tests
     return failed_tests
 
+
 def main():
     # Parse arguments
-    parser = argparse.ArgumentParser(description='Run a program with multiple input files')
+    parser = ArgumentParser(description='Run a program with multiple input files')
     parser.add_argument('-i', '--in', help='Input file prefix (default: in)', default='in')
     parser.add_argument('-o', '--out', help='Output file prefix (default: out)', default='out')
     parser.add_argument('-p', '--path', help='Path to input/output files (default: .)', default='.')
@@ -167,6 +168,6 @@ def main():
     try:
         regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'])
     except CommandNotFound:
-        sys.exit(100)
+        exit(100)
     except OutputNotFound:
-        sys.exit(101)
+        exit(101)
