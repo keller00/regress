@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/regress
 
     docker:
-      - image: circleci/python:2.7.10
+      - image: circleci/python:2.7.13
 
     steps:
       - checkout
