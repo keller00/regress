@@ -82,7 +82,7 @@ def debug(level, string):
         print string
 
 
-def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, error=False):
+def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, error=False, options=list()):
     """
     Running regress test
     :param command: string of script
@@ -91,6 +91,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     :param path: string of path to input/output files
     :param verbose: verbosity level of regress
     :param error: error flag
+    :param options: list of strings as options to the command
     :return: list of tuple of input file and actual output for each failed tests
     """
     # Set Constants
@@ -100,6 +101,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     OPTIONS['VERBOSE'] = verbose
     OPTIONS['PATH'] = path
     OPTIONS['ERROR'] = error
+    OPTIONS['OPTIONS'] = options
 
     # Check if command is valid
     command_no_args = OPTIONS['COMMAND'].split(" ")[0]
@@ -137,7 +139,8 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     for test, outpath in valid_pairs:
         failed = False
         input_file = open(test)
-        process = Popen(OPTIONS['COMMAND'], stdin=input_file, stdout=PIPE, stderr=PIPE)
+        args = [OPTIONS['COMMAND']] + OPTIONS['OPTIONS']
+        process = Popen(args, stdin=input_file, stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
 
         output = open(outpath).read()
