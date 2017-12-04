@@ -2,9 +2,6 @@ import os
 from regress import which, regress, VERSION, __all__
 
 
-def test_check_regress_available():
-    assert which('regress')
-
 def test_version():
     assert VERSION
 
