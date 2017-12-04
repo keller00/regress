@@ -23,6 +23,7 @@ jobs:
           command: |
             virtualenv venv
             . venv/bin/activate
+            python setup.py get_pandoc
             pip install -r requirements.txt
 
       - save_cache:
