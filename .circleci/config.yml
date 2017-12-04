@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/regress
 
     docker:
-      - image: circleci/python:2.7.10
+      - image: circleci/python:2.7.13
 
     steps:
       - checkout
@@ -21,7 +21,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            python -m venv venv
+            sudo apt-get install -y pandoc
+            virtualenv venv
             . venv/bin/activate
             pip install -r requirements.txt
 

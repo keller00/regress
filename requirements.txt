@@ -2,4 +2,6 @@ pip
 pytest
 pytest-runner
 setuptools
+pandoc
 pypandoc
+virtualenv

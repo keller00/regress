@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup
+from setuptools import setup, Command
 from regress import VERSION
 
 try:
@@ -8,6 +8,7 @@ try:
     LONG_DESC = pypandoc.convert("README.md", "rst")
 except (IOError, ImportError, RuntimeError):
     LONG_DESC = open('README.md').read()
+
 
 setup(
     name='regress',

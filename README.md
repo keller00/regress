@@ -1,4 +1,4 @@
-# [Regression Test Utility](https://en.wikipedia.org/wiki/Regression_testing "Regression Testing")
+# [Regression Test Utility](https://en.wikipedia.org/wiki/Regression_testing "Regression Testing") [![CircleCI](https://circleci.com/gh/keller00/regress.svg?style=svg)](https://circleci.com/gh/keller00/regress)
 Compare expected output(s) to actual output(s)
 
 ## Usage
