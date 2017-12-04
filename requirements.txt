@@ -1,0 +1,5 @@
+pip
+pytest
+pytest-runner
+setuptools
+pypandoc
