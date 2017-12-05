@@ -2,9 +2,11 @@ import random
 from regress import regress, VERSION, __all__
 from regress.regress import CommandNotFound, OutputNotFound
 
+
 def randstring(length=10):
-    valid_letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    valid_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     return ''.join((random.choice(valid_letters) for i in xrange(length)))
+
 
 def test_version():
     assert VERSION
