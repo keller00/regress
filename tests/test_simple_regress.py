@@ -98,6 +98,18 @@ def test_options(tmpdir):
     output_file1.write('^I^Itesting\n')
     assert regress('cat', path=tmpdir.strpath, error=True, options=['-t']) == []
 
+def test_options_2(tmpdir):
+    testing_string = 'a\tregress\tb'
+    expected_output = 'regress\n'
+    input_file1 = tmpdir.join('in1')
+    assert input_file1.check() is False
+    input_file1.write(testing_string)
+    output_file1 = tmpdir.join('out1')
+    assert output_file1.check() is False
+    output_file1.write(testing_string)
+    assert regress('cat', path=tmpdir.strpath) == []
+
+
 
 def test_one_fail(tmpdir):
     testing_string = 'testing\n'
