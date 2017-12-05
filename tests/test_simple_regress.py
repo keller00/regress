@@ -28,7 +28,9 @@ def test_simple_regression(tmpdir):
     assert output_file.check() is False
     output_file.write(testing_string)
     assert tmpdir.strpath
-    assert regress('cat', path=tmpdir.strpath) == []
+    r = regress('cat', path=tmpdir.strpath)
+    print r
+    assert r == []
 
 
 def test_changed_prefix_regression(tmpdir):
@@ -40,7 +42,9 @@ def test_changed_prefix_regression(tmpdir):
     assert output_file.check() is False
     output_file.write(testing_string)
     assert tmpdir.strpath
-    assert regress('cat', in_prefix='abc', out_prefix='asd', path=tmpdir.strpath) == []
+    r = regress('cat', in_prefix='abc', out_prefix='asd', path=tmpdir.strpath)
+    print r
+    assert r == []
 
 
 def test_command_not_found(tmpdir):
@@ -88,7 +92,7 @@ def test_missing_output_warning(tmpdir):
         raise AssertionError
 
 
-def test_options(tmpdir):
+def test_cat_options(tmpdir):
     testing_string1 = '\t\ttesting\n'
     input_file1 = tmpdir.join('in1')
     assert input_file1.check() is False
@@ -96,9 +100,12 @@ def test_options(tmpdir):
     output_file1 = tmpdir.join('out1')
     assert output_file1.check() is False
     output_file1.write('^I^Itesting\n')
-    assert regress('cat', path=tmpdir.strpath, error=True, options=['-t']) == []
+    r = regress('cat', path=tmpdir.strpath, error=True, options=['-t'])
+    print r
+    assert r == []
 
-def test_options_2(tmpdir):
+
+def test_awk_options(tmpdir):
     testing_string = 'a\tregress\tb'
     expected_output = 'regress\n'
     input_file1 = tmpdir.join('in1')
@@ -106,9 +113,10 @@ def test_options_2(tmpdir):
     input_file1.write(testing_string)
     output_file1 = tmpdir.join('out1')
     assert output_file1.check() is False
-    output_file1.write(testing_string)
-    assert regress('cat', path=tmpdir.strpath) == []
-
+    output_file1.write(expected_output)
+    r = regress('awk', path=tmpdir.strpath, options=['-F', '\t', '{print $2}'])
+    print r
+    assert r == []
 
 
 def test_one_fail(tmpdir):
@@ -125,7 +133,7 @@ def test_one_fail(tmpdir):
     output_file2 = tmpdir.join('out2')
     assert output_file2.check() is False
     output_file2.write(testing_string + 'fail')
-    failed_test = regress('cat', path=tmpdir.strpath)
-    print failed_test
-    assert len(failed_test) == 1
-    assert failed_test[0][0].endswith('in2')
+    r = regress('cat', path=tmpdir.strpath)
+    print r
+    assert len(r) == 1
+    assert r[0][0].endswith('in2')
