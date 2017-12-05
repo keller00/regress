@@ -99,19 +99,21 @@ def test_options(tmpdir):
     assert regress('cat', path=tmpdir.strpath, error=True, options=['-t']) == []
 
 
-def test_multiple_tests(tmpdir):
-    testing_string1 = randstring(50000)
-    testing_string2 = randstring(500000)
+def test_one_fail(tmpdir):
+    testing_string = 'testing\n'
     input_file1 = tmpdir.join('in1')
     assert input_file1.check() is False
-    input_file1.write(testing_string1)
+    input_file1.write(testing_string)
     input_file2 = tmpdir.join('in2')
     assert input_file2.check() is False
-    input_file2.write(testing_string2)
+    input_file2.write(testing_string)
     output_file1 = tmpdir.join('out1')
     assert output_file1.check() is False
-    output_file1.write('   50000\n')
+    output_file1.write(testing_string)
     output_file2 = tmpdir.join('out2')
     assert output_file2.check() is False
-    output_file2.write('  500000\n')
-    assert regress('wc', path=tmpdir.strpath, error=True, options=['-m']) == []
+    output_file2.write(testing_string + 'fail')
+    failed_test = regress('cat', path=tmpdir.strpath)
+    print failed_test
+    assert len(failed_test) == 1
+    assert failed_test[0][0].endswith('in2')
