@@ -170,10 +170,12 @@ def main():
     parser.add_argument('-e', '--error', help='Change warnings to errors', action='store_true')
     parser.add_argument('--version', action='version', help='Print current version number', version='regress version : %s' % VERSION)
     parser.add_argument('command', help='Command to run with input files')
+    # TODO
+    parser.add_argument('-a', help='Additional arguments for command', default='')
     args = vars(parser.parse_args())
     # Call regress
     try:
-        regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'])
+        regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'], args['arguments'].split(' '))
     except CommandNotFound:
         exit(100)
     except OutputNotFound:
