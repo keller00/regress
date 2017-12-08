@@ -163,15 +163,14 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
 def main():
     # Parse arguments
     parser = ArgumentParser(description='Run a program with multiple input files')
-    parser.add_argument('-i', '--in', help='Input file prefix (default: in)', default='in')
-    parser.add_argument('-o', '--out', help='Output file prefix (default: out)', default='out')
-    parser.add_argument('-p', '--path', help='Path to input/output files (default: .)', default='.')
+    parser.add_argument('command', help='Command to run with input files')
+    parser.add_argument('-a', metavar='args', type=str, help='Additional arguments for command', default='', dest='arguments')
     parser.add_argument('-v', '--verbose', help='Increase output verbosity', action='count', default=0)
     parser.add_argument('-e', '--error', help='Change warnings to errors', action='store_true')
+    parser.add_argument('-i', '--in', type=str, help='Input file prefix (default: in)', default='in')
+    parser.add_argument('-o', '--out', type=str, help='Output file prefix (default: out)', default='out')
+    parser.add_argument('-p', '--path', type=str, help='Path to input/output files (default: .)', default='.')
     parser.add_argument('--version', action='version', help='Print current version number', version='regress version : %s' % VERSION)
-    parser.add_argument('command', help='Command to run with input files')
-    # TODO
-    parser.add_argument('-a', help='Additional arguments for command', default='')
     args = vars(parser.parse_args())
     # Call regress
     try:
