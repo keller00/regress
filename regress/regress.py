@@ -82,7 +82,7 @@ def debug(level, string):
         print string
 
 
-def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, error=False):
+def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, error=False, options=list()):
     """
     Running regress test
     :param command: string of script
@@ -91,6 +91,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     :param path: string of path to input/output files
     :param verbose: verbosity level of regress
     :param error: error flag
+    :param options: list of strings as options to the command
     :return: list of tuple of input file and actual output for each failed tests
     """
     # Set Constants
@@ -100,6 +101,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     OPTIONS['VERBOSE'] = verbose
     OPTIONS['PATH'] = path
     OPTIONS['ERROR'] = error
+    OPTIONS['OPTIONS'] = options
 
     # Check if command is valid
     command_no_args = OPTIONS['COMMAND'].split(" ")[0]
@@ -137,7 +139,8 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     for test, outpath in valid_pairs:
         failed = False
         input_file = open(test)
-        process = Popen(OPTIONS['COMMAND'], stdin=input_file, stdout=PIPE, stderr=PIPE)
+        args = [OPTIONS['COMMAND']] + OPTIONS['OPTIONS']
+        process = Popen(args, stdin=input_file, stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
 
         output = open(outpath).read()
@@ -160,17 +163,18 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
 def main():
     # Parse arguments
     parser = ArgumentParser(description='Run a program with multiple input files')
-    parser.add_argument('-i', '--in', help='Input file prefix (default: in)', default='in')
-    parser.add_argument('-o', '--out', help='Output file prefix (default: out)', default='out')
-    parser.add_argument('-p', '--path', help='Path to input/output files (default: .)', default='.')
+    parser.add_argument('command', help='Command to run with input files')
+    parser.add_argument('-a', metavar='args', type=str, help='Additional arguments for command', default='', dest='arguments')
     parser.add_argument('-v', '--verbose', help='Increase output verbosity', action='count', default=0)
     parser.add_argument('-e', '--error', help='Change warnings to errors', action='store_true')
+    parser.add_argument('-i', '--in', type=str, help='Input file prefix (default: in)', default='in')
+    parser.add_argument('-o', '--out', type=str, help='Output file prefix (default: out)', default='out')
+    parser.add_argument('-p', '--path', type=str, help='Path to input/output files (default: .)', default='.')
     parser.add_argument('--version', action='version', help='Print current version number', version='regress version : %s' % VERSION)
-    parser.add_argument('command', help='Command to run with input files')
     args = vars(parser.parse_args())
     # Call regress
     try:
-        regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'])
+        regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'], filter(None, args['arguments'].split(' ')))
     except CommandNotFound:
         exit(100)
     except OutputNotFound:
