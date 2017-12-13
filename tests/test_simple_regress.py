@@ -77,6 +77,7 @@ def test_miltiple_files(tmpdir):
     except CommandNotFound:
         pass
 
+
 def test_missing_output_warning(tmpdir):
     """ Test missing output file exception """
     input_file = tmpdir.join('in1')

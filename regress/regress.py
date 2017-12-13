@@ -174,7 +174,7 @@ def main():
     args = vars(parser.parse_args())
     # Call regress
     try:
-        regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'], args['arguments'].split(' '))
+        regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'], filter(None, args['arguments'].split(' ')))
     except CommandNotFound:
         exit(100)
     except OutputNotFound:
