@@ -6,6 +6,7 @@ from sys import exit
 from glob import glob
 from subprocess import Popen, PIPE
 from argparse import ArgumentParser
+from .compat import PY3
 
 OPTIONS = {
     'COMMAND': None,
@@ -149,6 +150,8 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
         args = [OPTIONS['COMMAND']] + OPTIONS['OPTIONS']
         process = Popen(args, stdin=input_file, stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
+        if PY3:
+            stdout = stdout.decode()
 
         output = open(outpath).read()
         if len(output) != len(stdout):

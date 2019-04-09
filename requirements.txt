@@ -1,7 +1,6 @@
 pip
+setuptools
 pytest
 pytest-runner
-setuptools
 pandoc
 pypandoc
-virtualenv

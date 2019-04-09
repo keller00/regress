@@ -20,14 +20,14 @@ def test_exceptions():
 
 def test_simple_regression(tmpdir):
     """ Run simple regress test with cat and 1 input file """
-    testing_string = 'testing\n'
+    testing_string = u'testing\n'
     input_file = tmpdir.join('in1')
     assert not input_file.check()
     input_file.write(testing_string)
-    output_file = tmpdir.join('out1')
+    output_file = tmpdir.join(u'out1')
     assert not output_file.check()
     output_file.write(testing_string)
-    fails = regress('cat', path=tmpdir.strpath)
+    fails = regress(u'cat', path=tmpdir.strpath)
     print(fails)
     assert not fails
 
