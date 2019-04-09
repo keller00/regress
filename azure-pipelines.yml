@@ -34,13 +34,13 @@ jobs:
   - script: |
       pip install pytest
       pip install pytest-cov
-      pytest tests --doctest-modules --junitxml=coverage.xml --cov=regress --cov-report=xml --cov-report=html
+      pytest tests --doctest-modules --junitxml=coverage/cov.xml --cov=regress --cov-report=xml --cov-report=html
     displayName: 'pytest'
 
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/cov.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
 - job: 'Publish'
