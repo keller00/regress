@@ -40,7 +40,7 @@ jobs:
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: '**/test-results.xml;tests/cov.xml'
+      testResultsFiles: '**/test-results.xml;**/cov.xml'
       testRunTitle: 'Python $(python.version)'
     condition: succeededOrFailed()
 
