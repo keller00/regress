@@ -1,0 +1,40 @@
+parameters:
+  os: "linux"
+  python: ""
+  py_name: ""
+
+jobs:
+  - job: ${{ format('{0}_{1}_test', parameters.os, parameters.py_name) }}
+    pool:
+      ${{ if eq(parameters.os, 'windows') }}:
+        vmImage: "vs2017-win2016"
+      ${{ if eq(parameters.os, 'macOs') }}:
+        vmImage: "macOS 10.13"
+      ${{ if eq(parameters.os, 'linux') }}:
+        vmImage: "Ubuntu 16.04"
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: ${{ parameters.python }}
+          architecture: 'x64'
+
+      - script: python -m pip install --upgrade pip && pip install -r requirements.txt
+        displayName: 'Install dependencies and update pip'
+
+      - script: |
+          python -m pip install flake8
+          flake8 .
+        displayName: 'Running linter'
+
+      - script: |
+          pip install pytest
+          pip install pytest-cov
+          pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=regress --cov-report=xml --cov-report=html
+        displayName: 'Running tests'
+
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+          reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'

@@ -1,0 +1,10 @@
+[flake8]
+exclude =
+    # No need to traverse our git and generated folders
+    .git,
+    .tox,
+    .venv,
+    .cache,
+    .eggs,
+    __pycache__
+max-line-length = 120

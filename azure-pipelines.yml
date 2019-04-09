@@ -7,44 +7,60 @@ trigger:
 - master
 
 jobs:
-- job: 'Test'
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  strategy:
-    matrix:
-      Python27:
-        python.version: '2.7'
-      Python35:
-        python.version: '3.5'
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-    maxParallel: 4
 
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-      architecture: 'x64'
+# Linux tests
+- template: azure-test-template.yml
+  parameters: {os: linux, python: 2.7, py_name: py27}
+- template: azure-test-template.yml
+  parameters: {os: linux, python: 3.4, py_name: py34}
+- template: azure-test-template.yml
+  parameters: {os: linux, python: 3.5, py_name: py35}
+- template: azure-test-template.yml
+  parameters: {os: linux, python: 3.6, py_name: py36}
+- template: azure-test-template.yml
+  parameters: {os: linux, python: 3.7, py_name: py37}
 
-  - script: python -m pip install --upgrade pip && pip install -r requirements.txt
-    displayName: 'Install dependencies'
+# Windows tests
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 2.7, py_name: py27}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.4, py_name: py34}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.5, py_name: py35}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.6, py_name: py36}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.7, py_name: py37}
 
-  - script: |
-      pip install pytest
-      pip install pytest-cov
-      pytest tests --doctest-modules --junitxml=coverage/cov.xml --cov=regress --cov-report=xml --cov-report=html
-    displayName: 'pytest'
-
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/cov.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+# MacOs tests
+- template: azure-test-template.yml
+  parameters: {os: macOs, python: 2.7, py_name: py27}
+- template: azure-test-template.yml
+  parameters: {os: macOs, python: 3.4, py_name: py34}
+- template: azure-test-template.yml
+  parameters: {os: macOs, python: 3.5, py_name: py35}
+- template: azure-test-template.yml
+  parameters: {os: macOs, python: 3.6, py_name: py36}
+- template: azure-test-template.yml
+  parameters: {os: macOs, python: 3.7, py_name: py37}
 
 - job: 'Publish'
-  dependsOn: 'Test'
+  dependsOn:
+    - linux_py27_test
+    - linux_py34_test
+    - linux_py35_test
+    - linux_py36_test
+    - linux_py37_test
+    - windows_py27_test
+    - windows_py34_test
+    - windows_py35_test
+    - windows_py36_test
+    - windows_py37_test
+    - macOs_py27_test
+    - macOs_py34_test
+    - macOs_py35_test
+    - macOs_py36_test
+    - macOs_py37_test
   pool:
     vmImage: 'Ubuntu-16.04'
 

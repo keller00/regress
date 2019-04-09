@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup, Command
+from setuptools import setup
 from regress import VERSION
 
 try:
@@ -29,7 +29,7 @@ setup(
             'regress = regress:main'
         ]
     },
-    classifiers = [
+    classifiers=[
         'Environment :: Console',
         'Environment :: Other Environment',
 
