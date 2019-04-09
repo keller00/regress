@@ -35,12 +35,12 @@ jobs:
   - script: |
       pip install pytest
       pip install pytest-cov
-      pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+      pytest tests --doctest-modules --junitxml=cov.xml --cov=com --cov-report=xml --cov-report=html
     displayName: 'pytest'
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: '**/test-results.xml'
+      testResultsFiles: '**/test-results.xml;cov.xml'
       testRunTitle: 'Python $(python.version)'
     condition: succeededOrFailed()
 
