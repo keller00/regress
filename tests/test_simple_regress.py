@@ -28,7 +28,7 @@ def test_simple_regression(tmpdir):
     assert not output_file.check()
     output_file.write(testing_string)
     fails = regress('cat', path=tmpdir.strpath)
-    print fails
+    print(fails)
     assert not fails
 
 
@@ -42,7 +42,7 @@ def test_changed_prefix_regression(tmpdir):
     assert not output_file.check()
     output_file.write(testing_string)
     fails = regress('cat', in_prefix='abc', out_prefix='asd', path=tmpdir.strpath)
-    print fails
+    print(fails)
     assert not fails
 
 
@@ -100,7 +100,7 @@ def test_cat_with_non_printing_options(tmpdir):
     assert not output_file1.check()
     output_file1.write('^I^Itesting\n')
     fails = regress('cat', path=tmpdir.strpath, error=True, options=['-t'])
-    print fails
+    print(fails)
     assert not fails
 
 
@@ -115,7 +115,7 @@ def test_awk_with_second_column_options(tmpdir):
     assert not output_file1.check()
     output_file1.write(expected_output)
     fails = regress('awk', path=tmpdir.strpath, options=['-F', '\t', '{print $2}'])
-    print fails
+    print(fails)
     assert not fails
 
 
@@ -136,7 +136,7 @@ def test_one_fail(tmpdir):
     assert not output_file2.check()
     output_file2.write(testing_string + 'fail')
     fails = regress('cat', path=tmpdir.strpath)
-    print fails
+    print(fails)
     assert len(fails) == 1
     assert fails[0][0].endswith('in2')
     assert fails[0][1] == testing_string
