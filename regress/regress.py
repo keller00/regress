@@ -4,7 +4,6 @@
 import os
 from sys import exit
 from glob import glob
-from pkg_resources import require
 from subprocess import Popen, PIPE
 from argparse import ArgumentParser
 
@@ -30,6 +29,9 @@ class OutputNotFound(Exception):
 
 
 class Colors:
+    def __init__(self):
+        pass
+
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -77,12 +79,15 @@ def which(pgm):
 #   1 - verbose for regular users; output successful results
 #   2 - verbose for advanced users; output all information
 def debug(level, string):
-    """Prints debug mesages depending on current verbosity level"""
+    """Prints debug mesages depending on current verbosity level
+    :param level: integer of output version
+    :param string: a string to be debug logged
+    """
     if level <= OPTIONS['VERBOSE']:
-        print string
+        print(string)
 
 
-def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, error=False, options=list()):
+def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, error=False, options=None):
     """
     Running regress test
     :param command: string of script
@@ -95,6 +100,8 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     :return: list of tuple of input file and actual output for each failed tests
     """
     # Set Constants
+    if options is None:
+        options = list()
     OPTIONS['COMMAND'] = command
     OPTIONS['IN'] = in_prefix
     OPTIONS['OUT'] = out_prefix
@@ -164,17 +171,25 @@ def main():
     # Parse arguments
     parser = ArgumentParser(description='Run a program with multiple input files')
     parser.add_argument('command', help='Command to run with input files')
-    parser.add_argument('-a', metavar='args', type=str, help='Additional arguments for command', default='', dest='arguments')
+    parser.add_argument('-a', metavar='args', type=str, help='Additional arguments for command',
+                        default='', dest='arguments')
     parser.add_argument('-v', '--verbose', help='Increase output verbosity', action='count', default=0)
     parser.add_argument('-e', '--error', help='Change warnings to errors', action='store_true')
     parser.add_argument('-i', '--in', type=str, help='Input file prefix (default: in)', default='in')
     parser.add_argument('-o', '--out', type=str, help='Output file prefix (default: out)', default='out')
     parser.add_argument('-p', '--path', type=str, help='Path to input/output files (default: .)', default='.')
-    parser.add_argument('--version', action='version', help='Print current version number', version='regress version : %s' % VERSION)
+    parser.add_argument('--version', action='version', help='Print current version number',
+                        version='regress version : %s' % VERSION)
     args = vars(parser.parse_args())
     # Call regress
     try:
-        regress(args['command'], args['in'], args['out'], args['path'], args['verbose'], args['error'], filter(None, args['arguments'].split(' ')))
+        regress(args['command'],
+                args['in'],
+                args['out'],
+                args['path'],
+                args['verbose'],
+                args['error'],
+                filter(None, args['arguments'].split(' ')))
     except CommandNotFound:
         exit(100)
     except OutputNotFound:

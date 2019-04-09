@@ -1,4 +1,4 @@
-# [Regression Test Utility](https://en.wikipedia.org/wiki/Regression_testing "Regression Testing") [![CircleCI](https://circleci.com/gh/keller00/regress.svg?style=svg)](https://circleci.com/gh/keller00/regress)
+# [Regression Test Utility](https://en.wikipedia.org/wiki/Regression_testing "Regression Testing") [![Build Status](https://dev.azure.com/markoookeller/regress/_apis/build/status/keller00.regress?branchName=master)](https://dev.azure.com/markoookeller/regress/_build/latest?definitionId=1&branchName=master)
 Compare expected output(s) to actual output(s)
 
 ## Usage
