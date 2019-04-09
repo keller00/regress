@@ -38,11 +38,11 @@ jobs:
       pytest tests --doctest-modules --junitxml=coverage/cov.xml --cov=com --cov-report=xml --cov-report=html
     displayName: 'pytest'
 
-  - task: PublishTestResults@2
+  - task: PublishCodeCoverageResults@1
     inputs:
-      testResultsFiles: '**/cov.xml'
-      testRunTitle: 'Python $(python.version)'
-    condition: succeededOrFailed()
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/cov.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
 - job: 'Publish'
   dependsOn: 'Test'
