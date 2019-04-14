@@ -118,7 +118,7 @@ def regress(command, in_prefix='in', out_prefix='out', path='.', verbose=0, erro
     local_file = os.path.isfile(command_no_args)  # Command is a local file
     if not (path_file or local_file):
         print_errors('Command %s not found' % command_no_args)
-        raise CommandNotFound
+        raise CommandNotFound('Missing command {}'.format(command_no_args))
 
     debug(2, "Checking path: %s" % os.path.join(OPTIONS['PATH'], OPTIONS['IN'] + '*'))
     input_files = glob(os.path.join(OPTIONS['PATH'], OPTIONS['IN'] + '*'))

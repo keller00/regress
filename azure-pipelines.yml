@@ -21,16 +21,16 @@ jobs:
   parameters: {os: linux, python: 3.7, py_name: py37}
 
 # Windows tests
-#- template: azure-test-template.yml
-#  parameters: {os: windows, python: 2.7, py_name: py27}
-#- template: azure-test-template.yml
-#  parameters: {os: windows, python: 3.4, py_name: py34}
-#- template: azure-test-template.yml
-#  parameters: {os: windows, python: 3.5, py_name: py35}
-#- template: azure-test-template.yml
-#  parameters: {os: windows, python: 3.6, py_name: py36}
-#- template: azure-test-template.yml
-#  parameters: {os: windows, python: 3.7, py_name: py37}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 2.7, py_name: py27}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.4, py_name: py34}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.5, py_name: py35}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.6, py_name: py36}
+- template: azure-test-template.yml
+  parameters: {os: windows, python: 3.7, py_name: py37}
 
 # MacOs tests
 - template: azure-test-template.yml
@@ -51,11 +51,11 @@ jobs:
     - linux_py35_test
     - linux_py36_test
     - linux_py37_test
-#    - windows_py27_test
-#    - windows_py34_test
-#    - windows_py35_test
-#    - windows_py36_test
-#    - windows_py37_test
+    - windows_py27_test
+    - windows_py34_test
+    - windows_py35_test
+    - windows_py36_test
+    - windows_py37_test
     - macOs_py27_test
     - macOs_py34_test
     - macOs_py35_test
